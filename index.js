@@ -214,6 +214,11 @@ app.post('/api/:mode', async function(req, res) {
   }
 });
 
+
+app.get('/heroku/test', function(req, res) {
+  res.status(200).send('HELLO HEROKU');
+});
+
 const server = http.createServer(app);
 const socketioJwt = require('socketio-jwt');
 const io = socketIo(server);
