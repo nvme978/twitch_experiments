@@ -86,7 +86,7 @@ function Stream() {
                         frameBorder="10"
                         scrolling="no"
                         id='chat_embed'
-                        src={'http://www.twitch.tv/embed/' + liveStream + '/chat?parent=' + process.env.REACT_APP_SERVER_BASE_DOMAIN}
+                        src={'https://www.twitch.tv/embed/' + liveStream + '/chat?parent=' + process.env.REACT_APP_SERVER_BASE_DOMAIN}
                         height="300"
                         width="300">
                     </iframe> : <p>No live streams right now!</p>}

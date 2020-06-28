@@ -194,7 +194,7 @@ app.post('/api/:mode', async function(req, res) {
           'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=' + req.body.userId,
           'hub.mode': req.params.mode,
           'hub.lease_seconds': 864000,
-          'hub.callback': 'https://fcc7e40161cd.ngrok.io/webhook/event/to_follow/' + req.session.passport.user.data[0].id
+          'hub.callback': process.env.TWITCH_WEBHOOK_BASE_URL + '/webhook/event/to_follow/' + req.session.passport.user.data[0].id
         },
         headers: {
           'Authorization': 'Bearer ' + req.session.passport.user.accessToken,
@@ -209,7 +209,7 @@ app.post('/api/:mode', async function(req, res) {
         'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + req.body.userId,
         'hub.mode': req.params.mode,
         'hub.lease_seconds': 864000,
-        'hub.callback': 'https://fcc7e40161cd.ngrok.io/webhook/event/stream_change/' + req.session.passport.user.data[0].id
+        'hub.callback': process.env.TWITCH_WEBHOOK_BASE_URL + '/webhook/event/stream_change/' + req.session.passport.user.data[0].id
       };
       result = await rp(options);
       res.status(200).send();
