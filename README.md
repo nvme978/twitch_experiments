@@ -66,3 +66,7 @@ AWS provides all the services that we need to run this app. We may use
 The advantage of using all AWS services is that scaling will be automatically taken care of. AWS will dynamically scale resources as demand rises or falls. 
 
 AWS APIGateway also has EDGE-Aware services which route the client calls to the nearest CDN. 
+
+![Screenshot](images/AWS_flow.png)
+
+The bottleneck would be the webhook receiver. We have only one route which receives these webhooks and fires events to the clients. With an increase in clients, we will start seeing delays in the event delivery. 
