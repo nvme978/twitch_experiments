@@ -55,6 +55,24 @@ $ npm start
 ## Next Steps
 ![Profit???](https://i.ytimg.com/vi/if-2M3K1tqk/hqdefault.jpg)
 
+
+## Assumptions
+
+1. One embedded livestream of the selected streamer and the chat for that livestream is shown on the page.
+2. Events shows two types of events - Follows and stream events. 
+
+
+## Architecture
+1. `reactjs` client makes a OAuth request to the `express` server. 
+2. User is redirected to the Twitch login.
+3. Once user logs in to Twitch, the session is stored on the server using `Passport`. A JWT token is generated and sent to the client. 
+4. Once the user chooses his/her favorite streamer, a request is sent to the server to subscribe to webhooks for follow and stream change events. 
+5. A socket connection is established between the client and the server when the user access `/stream` route. 
+6. As soon as a webhook is received for a subscribed evernt - a socket event is emitted.
+7. How is the appropriate client selected for sending the socket event? - When the socket connection is initially established, the user is authorized using a JWT token. Server decodes this token and extracts the `user_id` from it. The server maintains a map of all the users and their corresponding sockets using this `user_id`. 
+8. How are different webhook subscriptions maintained for different users? - Each webhook subscription for a user contains the `user_id` in the URL. The webhook callback looks something like this - `/webhook/callback/:user_id`. Whenever we receive a webhook event, we figure out the appropriate user from the URL. Once we have the `user_id`, we get the socket for this user from our map of active clients and emit on that socket. 
+
+
 ## How will we deploy this to AWS?
 
 AWS provides all the services that we need to run this app. We may use 
