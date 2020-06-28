@@ -15,7 +15,7 @@ var session        = require('express-session');
 var passport       = require('passport');
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var request        = require('request');
-var handlebars     = require('handlebars');
+var path = require('path');
 const socketIo = require("socket.io");
 const http = require("http");
 const bodyParser = require('body-parser');
@@ -34,7 +34,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({secret: SESSION_SECRET, resave: false, saveUninitialized: false}));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -119,13 +119,13 @@ app.post('/auth/refresh_token', async function(req, res) {
 
 
 // If user has an authenticated session, display it, otherwise display link to authenticate
-app.get('/', function (req, res) {
-  if(req.session && req.session.passport && req.session.passport.user) {
-    res.redirect('http://localhost:3000/');
-  } else {
-    res.send('<html><head><title>Twitch Auth Sample</title></head><a href="/auth/twitch">Login to Twitch</a></html>');
-  }
-});
+// app.get('/', function (req, res) {
+//   if(req.session && req.session.passport && req.session.passport.user) {
+//     res.redirect('http://localhost:3000/');
+//   } else {
+//     res.send('<html><head><title>Twitch Auth Sample</title></head><a href="/auth/twitch">Login to Twitch</a></html>');
+//   }
+// });
 
 app.get('/auth/user', function(req, res) {
   if (req.session && req.session.passport && req.session.passport.user) {
@@ -218,6 +218,14 @@ app.post('/api/:mode', async function(req, res) {
 app.get('/heroku/test', function(req, res) {
   res.status(200).send('HELLO HEROKU');
 });
+
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
+
 
 const server = http.createServer(app);
 const socketioJwt = require('socketio-jwt');
