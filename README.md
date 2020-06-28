@@ -1,6 +1,8 @@
 # Twitch Experiments
 Here you will find a simple Express web app illustrating how to authenticate Twitch API calls using the OAuth authorization code flow.  This sample uses [Express](http://expressjs.com/), [Passport](http://passportjs.org/) for the server and [ReactJS](https://reactjs.org/) for the client.
 
+DEMO: [Heroku App](https://sleepy-plains-09747.herokuapp.com)
+
 ![Screenshot](images/screenshot.png)
 
 ## Installation
