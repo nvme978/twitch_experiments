@@ -10,6 +10,7 @@ or in the "license" file accompanying this file. This file is distributed on an 
 */
 
 // Define our dependencies
+require('dotenv').config();
 var express        = require('express');
 var session        = require('express-session');
 var passport       = require('passport');
@@ -29,6 +30,7 @@ const TWITCH_SECRET = process.env.TWITCH_SECRET;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const TWITCH_CALLBACK_URL = process.env.TWITCH_CALLBACK_URL;  // You can run locally with - http://localhost:3000/auth/twitch/callback
 
+console.log(TWITCH_CALLBACK_URL);
 // Initialize Express and middlewares
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -245,4 +247,6 @@ io.on("connection", (s) => {
   });
 });
 
-server.listen(process.env.PORT || 4000, () => console.log(`Listening on port 4000`));
+const port = process.env.PORT || 4000;
+
+server.listen(port, () => console.log(`Listening on port ${port}`));
