@@ -1,5 +1,7 @@
 # Twitch Experiments
-Here you will find a simple Express web app illustrating how to authenticate Twitch API calls using the OAuth authorization code flow.  This sample uses [Express](http://expressjs.com/), [Passport](http://passportjs.org/) on the backend and [ReactJS](https://reactjs.org/) on the frontend.
+Here you will find a simple Express web app illustrating how to authenticate Twitch API calls using the OAuth authorization code flow.  This sample uses [Express](http://expressjs.com/), [Passport](http://passportjs.org/) for the server and [ReactJS](https://reactjs.org/) for the client.
+
+![Screenshot](images/screenshot.png)
 
 ## Installation
 1. After you have cloned this repository, use [npm](https://www.npmjs.com/) to install dependencies on the backend.
@@ -35,9 +37,17 @@ $ node index.js
 ## Usage Client
 Before running the client, you need to set the two configuration fields in the `.env` file. 
 
+1. REACT_APP_TWITCH_CLIENT_ID - Your Twitch Client ID
+2. REACT_APP_SERVER_BASE_URL - Base URL for your server. To test locally you may use [http://localhost:4000]
+
+After setting these fields, you may run the server
+
+```sh
+$ npm start
+```
 
 ## Next Steps
-From here you can add as many routes, views, and templates as you want and create a real web app for Twitch users.
+
 
 ## License
 
