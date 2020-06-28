@@ -72,7 +72,7 @@ function Stream() {
                 <Col>
                     <h2>Livestream</h2>
                     {liveStream ? <iframe
-                        src={'https://player.twitch.tv/?channel=' + liveStream + '&parent=localhost'}
+                        src={'https://player.twitch.tv/?channel=' + liveStream + '&parent=' + process.env.REACT_APP_SERVER_BASE_DOMAIN}
                         height="300"
                         width="300"
                         frameBorder="10"
@@ -86,7 +86,7 @@ function Stream() {
                         frameBorder="10"
                         scrolling="no"
                         id='chat_embed'
-                        src={'http://www.twitch.tv/embed/' + liveStream + '/chat?parent=localhost'}
+                        src={'http://www.twitch.tv/embed/' + liveStream + '/chat?parent=' + process.env.REACT_APP_SERVER_BASE_DOMAIN}
                         height="300"
                         width="300">
                     </iframe> : <p>No live streams right now!</p>}
