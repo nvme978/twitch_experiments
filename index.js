@@ -24,10 +24,10 @@ var rp = require('request-promise');
 let activeClients = {};
 
 // Define our constants, you will change these with your own
-const TWITCH_CLIENT_ID = 'rqmi6gpeq1mdyme5txb03cjfmrmakt';
-const TWITCH_SECRET = 'iryeyl756u7ertud6wlsow6ik12ri0';
-const SESSION_SECRET   = 'ABC!123';
-const CALLBACK_URL = 'http://localhost:4000/auth/twitch/callback';  // You can run locally with - http://localhost:3000/auth/twitch/callback
+const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
+const TWITCH_SECRET = process.env.TWITCH_SECRET;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const TWITCH_CALLBACK_URL = process.env.TWITCH_CALLBACK_URL;  // You can run locally with - http://localhost:3000/auth/twitch/callback
 
 // Initialize Express and middlewares
 var app = express();
@@ -73,7 +73,7 @@ passport.use('twitch', new OAuth2Strategy({
     tokenURL: 'https://id.twitch.tv/oauth2/token',
     clientID: TWITCH_CLIENT_ID,
     clientSecret: TWITCH_SECRET,
-    callbackURL: CALLBACK_URL,
+    callbackURL: TWITCH_CALLBACK_URL,
     state: true
   },
   function(accessToken, refreshToken, profile, done) {
