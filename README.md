@@ -19,12 +19,14 @@ $ yarn add
 ```
 
 ## Usage Server
-Before running this sample, you will need to set four configuration fields at the top of index.js:
+Before running this sample, you will need to set siz configuration fields in your .env:
 
 1. TWITCH_CLIENT_ID - This is the Client ID of your registered application.  You can register a new application at [https://dev.twitch.tv/dashboard/apps]
 2. TWITCH_CLIENT_SECRET - This is the secret generated for you when you register your application, do not share this. In a production environment, it is STRONGLY recommended that you do not store application secrets on your file system or in your source code.
 3. SESSION_SECRET -  This is the secret Express session middleware uses to sign the session ID cookie.
 4. CALLBACK_URL - This is the callback URL you supply when you register your application.  To run this sample locally use [http://localhost:3000/auth/twitch/callback]
+5. TWITCH_WEBHOOK_BASE_URL - Base URL of where you want the Twitch webhooks to be received.
+6. PORT - Port where you want to run your server.
 
 Optionally, you may modify the requested scopes when the /auth/twitch route is defined.
 
@@ -39,6 +41,8 @@ Before running the client, you need to set the two configuration fields in the `
 
 1. REACT_APP_TWITCH_CLIENT_ID - Your Twitch Client ID
 2. REACT_APP_SERVER_BASE_URL - Base URL for your server. To test locally you may use [http://localhost:4000]
+3. REACT_APP_SERVER_BASE_DOMAIN - Domain name of your server. For local you may user `localhost`
+
 
 After setting these fields, you may run the server
 
@@ -49,12 +53,14 @@ $ npm start
 ## Next Steps
 ![Profit???](https://i.ytimg.com/vi/if-2M3K1tqk/hqdefault.jpg)
 
-## License
+## How will we deploy this to AWS?
 
-Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+AWS provides all the services that we need to run this app. We may use 
 
-Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
+1. AWS Lambda to host our controller functions. These will be functions that perform the business logic of our app.
+2. AWS APIGateway to host our routes. These routes will call our Lambda functions. 
+3. AWS Amplify to host our static client content.
 
-    http://aws.amazon.com/apache2.0/
+The advantage of using all AWS services is that scaling will be automatically taken care of. AWS will dynamically scale resources as demand rises or falls. 
 
-or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
+AWS APIGateway also has EDGE-Aware services which route the client calls to the nearest CDN. 
