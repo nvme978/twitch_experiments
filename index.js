@@ -158,6 +158,7 @@ app.post('/webhook/event/to_follow/:userId', function (req, res) {
     console.log('EMITTING...');
     activeClients[userId].emit("to_follow", req.body.data);
   }
+  res.status(200).send();
 });
 
 app.get('/webhook/event/stream_change/:userId', function (req, res) {
@@ -174,6 +175,7 @@ app.post('/webhook/event/stream_change/:userId', function (req, res) {
     console.log('EMITTING...');
     activeClients[userId].emit("stream_change", req.body.data);
   }
+  res.status(200).send();
 });
 
 
