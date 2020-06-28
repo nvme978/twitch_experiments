@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, InputGroup, FormControl, Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -7,9 +7,18 @@ import api from '../api';
 function FavStreamer() {
 
     const [username, setUsername] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     const currentStreamer = localStorage.getItem('fav_streamer');
     const [requestedUser, setRequestedUser] = useState(currentStreamer ? JSON.parse(currentStreamer) : null);
+
+    useEffect(() => {
+        const jwt = localStorage.getItem('jwt_token');
+        console.log(jwt);
+        if(jwt && jwt != '') {
+            setIsAuthenticated(true);
+        }   
+    }, [])
 
     const getTwitchUserDetails = async () => {
         let result = null;
@@ -36,6 +45,7 @@ function FavStreamer() {
 
     return (
         <Container>
+        {isAuthenticated ? 
             <Row className="align-items-center">
                 <Col>
                     <InputGroup className="mb-3">
@@ -68,7 +78,8 @@ function FavStreamer() {
                         </div>
                     }
                 </Col>
-            </Row>
+            </Row>:
+            <p>Please login first</p>}
         </Container>
     )
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import socketIOClient from "socket.io-client";
 import _ from 'lodash';
+import Confetti from 'react-confetti';
 import api from '../api';
 
 const ENDPOINT = process.env.REACT_APP_SERVER_BASE_URL;
@@ -11,8 +12,27 @@ function Stream() {
 
     const [eventList, setEventList] = useState([]);
     const [liveStream, setLiveStream] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [streamerSelected, setStreamerSelected] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
+
+    let confettiShown = false;
 
     useEffect(() => {
+
+        const jwt = localStorage.getItem('jwt_token');
+        if (jwt && jwt != '') {
+            setIsAuthenticated(true);
+        } else {
+            return;
+        }
+        
+        if (localStorage.getItem('fav_streamer') && localStorage.getItem('fav_streamer') != '') {
+            setStreamerSelected(true);
+        } else {
+            return
+        }
+
         // Subscribe to events for this streamer
         let result = api.post('/api/subscribe', {
             userId: JSON.parse(localStorage.getItem('fav_streamer')).id
@@ -22,12 +42,18 @@ function Stream() {
             if (data && data.length) {
                 let msg = data[0].from_name + ' just followed ' + data[0].to_name;
                 setEventList(eventList => [msg, ..._.slice(eventList, 0, 9)]);
+                if (confettiShown == false) {
+                    setShowConfetti(true);
+                }
             }
         });
         socket.on("stream_change", data => {
             if (data && data.length) {
                 let msg = data.username + ' just went ' + data.type + ' with stream ' + data.title;
                 setEventList(eventList => [msg, ..._.slice(eventList, 0, 9)]);
+                if (confettiShown == false) {
+                    setShowConfetti(true);
+                }
             }
         });
 
@@ -65,9 +91,26 @@ function Stream() {
         }
     }, []);
 
+    
+    if (!isAuthenticated) {
+        return (
+            <Container>
+                <p>Please login first</p>
+            </Container>   
+        )
+    }
+
+    if (!streamerSelected) {
+        return (
+            <Container>
+                <p>Please select your fav streamer first</p>
+            </Container>
+        )
+    }
 
     return (
         <Container>
+            {showConfetti && <Confetti recycle={false} />}
             <Row>
                 <Col>
                     <h2>Livestream</h2>

@@ -15,12 +15,16 @@ function Welcome() {
             console.log(result.data);
             if (_.isEmpty(result.data)) {
                 // User is not logged in - Show appropriate message
+                localStorage.setItem('jwt_token', '');
+                localStorage.setItem('access_token', '');
             } else {
-                setIsAuthenticated(true);
-                setUserName(result.data.user.data[0].display_name);
                 localStorage.setItem('access_token', result.data.user.accessToken);
                 localStorage.setItem('jwt_token', result.data.token);
+                setIsAuthenticated(true);
+                setUserName(result.data.user.data[0].display_name);
+                
             }
+            
         }
         checkForAuth();
     }, [])
