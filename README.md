@@ -60,6 +60,7 @@ $ npm start
 
 1. One embedded livestream of the selected streamer and the chat for that livestream is shown on the page.
 2. Events shows two types of events - Follows and stream events. 
+3. Twitch API for searching `channels` does a fuzzy search on the user name. So it might return a stream of some other user with similar name. This is more of a caveat.
 
 
 ## Architecture
