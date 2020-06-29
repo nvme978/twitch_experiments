@@ -22,13 +22,18 @@ function FavStreamer() {
 
     const getTwitchUserDetails = async () => {
         let result = null;
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Client-ID': process.env.REACT_APP_TWITCH_CLIENT_ID
+        }
         try {
-            result = await api.get('https://api.twitch.tv/helix/users?login=' + username);
+            console.log(localStorage.getItem('access_token'));
+            result = await api.get('https://api.twitch.tv/helix/users?login=' + username, {headers});
         } catch (err) {
             // Try refreshing the token
             let creds = await api.post('/auth/refresh_token');
             localStorage.setItem('access_token', creds.data.accessToken);
-            result = await api.get('https://api.twitch.tv/helix/users?login=' + username);
+            result = await api.get('https://api.twitch.tv/helix/users?login=' + username, {headers});
         }
         if (_.isEmpty(result.data.data)) {
             alert('No user found');

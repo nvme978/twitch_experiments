@@ -20,6 +20,11 @@ function Stream() {
 
     useEffect(() => {
 
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Client-ID': process.env.REACT_APP_TWITCH_CLIENT_ID
+        }
+
         const jwt = localStorage.getItem('jwt_token');
         if (jwt && jwt != '') {
             setIsAuthenticated(true);
@@ -62,12 +67,12 @@ function Stream() {
         const fetchActiveStream = async () => {
             
             try {
-                result = await api.get('https://api.twitch.tv/helix/search/channels?live_only=true&query=' + JSON.parse(localStorage.getItem('fav_streamer')).display_name);
+                result = await api.get('https://api.twitch.tv/helix/search/channels?live_only=true&query=' + JSON.parse(localStorage.getItem('fav_streamer')).display_name, {headers});
             } catch (err) {
                 // Try refreshing the token
                 let creds = await api.post('/auth/refresh_token');
                 localStorage.setItem('access_token', creds.data.accessToken);
-                result = await api.get('https://api.twitch.tv/helix/search/channels?live_only=true&query=' + JSON.parse(localStorage.getItem('fav_streamer')).display_name);
+                result = await api.get('https://api.twitch.tv/helix/search/channels?live_only=true&query=' + JSON.parse(localStorage.getItem('fav_streamer')).display_name, {headers});
             }
             if (result.data.data && result.data.data.length) {
                 const ls = result.data.data[0];
